@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Александр и Екатерина — Свадьба</title>
+<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --gold: #c9a227;
+    --gold-light: #e6cf7f;
+    --gold-pale: #f7f0dd;
+    --white: #fffdf8;
+    --text: #4a4235;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'Montserrat', sans-serif;
+    background: var(--white);
+    color: var(--text);
+    line-height: 1.7;
+  }
+  h1, h2, h3 { font-family: 'Playfair Display', serif; color: #3d3628; }
+  .script { font-family: 'Great Vibes', cursive; }
+
+  /* ---------- Шапка ---------- */
+  header {
+    background: linear-gradient(160deg, #fffdf8 0%, var(--gold-pale) 100%);
+    text-align: center;
+    padding: 90px 20px 70px;
+    border-bottom: 1px solid var(--gold-light);
+  }
+  header .names {
+    font-family: 'Great Vibes', cursive;
+    font-size: clamp(48px, 9vw, 96px);
+    color: var(--gold);
+    font-weight: 400;
+  }
+  header .divider {
+    width: 120px; height: 1px;
+    background: var(--gold);
+    margin: 26px auto;
+    position: relative;
+  }
+  header .divider::before {
+    content: "❦";
+    position: absolute; top: -13px; left: 50%;
+    transform: translateX(-50%);
+    color: var(--gold);
+    font-size: 20px;
+    background: var(--gold-pale);
+    padding: 0 8px;
+  }
+  header .date { letter-spacing: 6px; text-transform: uppercase; font-size: 15px; }
+
+  /* ---------- Секции ---------- */
+  section {
+    max-width: 820px;
+    margin: 0 auto;
+    padding: 70px 25px;
+    text-align: center;
+  }
+  section h2 { font-size: 32px; margin-bottom: 8px; }
+  section h2::after {
+    content: "";
+    display: block;
+    width: 70px; height: 1px;
+    background: var(--gold);
+    margin: 16px auto 0;
+  }
+  section p { margin-top: 22px; font-size: 17px; }
+
+  /* Редактируемые блоки */
+  [contenteditable="true"] {
+    outline: 1.5px dashed var(--gold-light);
+    outline-offset: 6px;
+    border-radius: 4px;
+    cursor: text;
+    transition: outline-color .2s;
+  }
+  [contenteditable="true"]:hover, [contenteditable="true"]:focus {
+    outline-color: var(--gold);
+  }
+
+  /* ---------- Панель редактирования ---------- */
+  #edit-bar {
+    position: fixed; bottom: 24px; right: 24px; z-index: 50;
+    display: flex; flex-direction: column; gap: 8px;
+  }
+  #edit-bar button {
+    font-family: 'Montserrat', sans-serif;
+    background: #fff;
+    border: 1px solid var(--gold);
+    color: var(--gold);
+    padding: 10px 18px;
+    border-radius: 30px;
+    cursor: pointer;
+    font-size: 13px;
+    letter-spacing: 1px;
+    box-shadow: 0 2px 10px rgba(201,162,39,.25);
+    transition: all .2s;
+  }
+  #edit-bar button:hover { background: var(--gold); color: #fff; }
+  body:not(.editing) .edit-only { display: none; }
+
+  /* ---------- Опрос ---------- */
+  .rsvp-wrap {
+    background: linear-gradient(160deg, var(--gold-pale) 0%, #fdf9ee 100%);
+    padding: 70px 25px 90px;
+  }
+  .rsvp {
+    max-width: 620px;
+    margin: 0 auto;
+    background: #fff;
+    border: 1px solid var(--gold-light);
+    border-radius: 14px;
+    padding: 40px 35px;
+    box-shadow: 0 6px 30px rgba(201,162,39,.12);
+  }
+  .rsvp label {
+    display: block;
+    text-align: left;
+    margin: 22px 0 6px;
+    font-size: 14px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: #8a7a55;
+  }
+  .rsvp input[type="text"], .rsvp input[type="email"],
+  .rsvp input[type="number"], .rsvp textarea {
+    width: 100%;
+    padding: 12px 14px;
+    border: 1px solid var(--gold-light);
+    border-radius: 8px;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 15px;
+    background: var(--white);
+    color: var(--text);
+  }
+  .rsvp textarea { resize: vertical; min-height: 90px; }
+  .radio-row { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 8px; }
+  .radio-row label {
+    display: flex; align-items: center; gap: 8px;
+    margin: 0; padding: 10px 18px;
+    border: 1px solid var(--gold-light);
+    border-radius: 30px;
+    cursor: pointer;
+    text-transform: none;
+    letter-spacing: 0;
+    color: var(--text);
+    transition: all .2s;
+    font-size: 15px;
+  }
+  .radio-row label:hover { border-color: var(--gold); }
+  .radio-row input { accent-color: var(--gold); }
+  .rsvp button[type="submit"] {
+    margin-top: 32px;
+    width: 100%;
+    padding: 15px;
+    background: var(--gold);
+    color: #fff;
+    border: none;
+    border-radius: 40px;
+    font-family: 'Playfair Display', serif;
+    font-size: 18px;
+    letter-spacing: 2px;
+    cursor: pointer;
+    transition: background .2s;
+  }
+  .rsvp button[type="submit"]:hover { background: #a98514; }
+  #thanks { display: none; text-align: center; padding: 30px 0; }
+  #thanks .script { font-size: 44px; color: var(--gold); }
+
+  footer {
+    background: #3d3628;
+    color: var(--gold-pale);
+    text-align: center;
+    padding: 34px 20px;
+    font-size: 14px;
+    letter-spacing: 2px;
+  }
+  footer .script { font-size: 30px; color: var(--gold-light); display: block; margin-bottom: 6px; }
+</style>
+</head>
+<body>
+
+<!-- Панель редактирования (видна только вам, на гостевой версии её можно удалить) -->
+<div id="edit-bar">
+  <button class="edit-only" onclick="toggleEdit()" id="editBtn">✎ Включить редактирование</button>
+  <button onclick="downloadHTML()">⤓ Скачать готовую версию</button>
+</div>
+
+<header>
+  <div class="names" data-edit>Александр & Екатерина</div>
+  <div class="divider"></div>
+  <div class="date" data-edit>17 июня 2027</div>
+  <p data-edit style="margin-top:20px;">Мы рады пригласить вас разделить с нами самый счастливый день</p>
+</header>
+
+<section>
+  <h2>Дорогие гости!</h2>
+  <p data-edit>Дорогие наши родные и друзья! Мы с огромной радостью приглашаем вас разделить с нами самый счастливый день нашей жизни — день нашей свадьбы. Пусть этот праздник станет началом прекрасной истории, которую мы будем вспоминать вместе с вами долгие годы!</p>
+</section>
+
+<section style="background: var(--gold-pale);">
+  <h2>Программа дня</h2>
+  <p data-edit>16:00 — Сбор гостей в welcome-зоне<br>
+  16:30 — Начало мероприятия<br>
+  18:30 — Ужин и первая грация танца<br>
+  22:00 — Торт и речь молодожёнов</p>
+</section>
+
+<section>
+  <h2>Место проведения</h2>
+  <p data-edit>Лахта Плаза, Приморский просп., 78, корп. 1.<br>   
+</section>
+
+<div class="rsvp-wrap" id="rsvp">
+  <div class="rsvp">
+    <h2 style="margin-bottom:5px;">Анкета гостя</h2>
+    <p style="margin-top:12px; font-size:15px;">Пожалуйста, ответьте на несколько вопросов — так нам будет проще всё подготовить.</p>
+
+    <form id="rsvpForm" action="https://formspree.io/f/ВАШ_КОД" method="POST">
+      <label for="name">Ваше имя и фамилия</label>
+      <input type="text" id="name" name="Имя гостя" required>
+
+      <label>Придёте ли вы?</label>
+      <div class="radio-row">
+        <label><input type="radio" name="Присутствие" value="Да, с радостью приду" required> Да, конечно</label>
+        <label><input type="radio" name="Присутствие" value="Приду с парой"> Буду с парой</label>
+        <label><input type="radio" name="Присутствие" value="К сожалению, не смогу"> К сожалению, не смогу</label>
+      </div>
+
+      <label for="drinks">Предпочтения по напиткам</label>
+      <input type="text" id="drinks" name="Напитки" placeholder="Например: вино, виски, безалкогольное и т.п.">
+
+      <label for="food">Особенности питания (аллергии, вегетарианство)</label>
+      <input type="text" id="food" name="Питание" placeholder="Необязательно">
+
+      <label for="msg">Пожелание молодожёнам</label>
+      <textarea id="msg" name="Пожелание" placeholder="Необязательно"></textarea>
+
+      <button type="submit">Отправить ответ</button>
+    </form>
+
+    <div id="thanks">
+      <div class="script">Спасибо!</div>
+      <p>Ваш ответ получен — ждём встречи на празднике.</p>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <span class="script">А & E</span>
+  <span data-edit>Ждём вас с нетерпением!</span>
+</footer>
+
+<script>
+  // Переключение режима редактирования
+  function toggleEdit() {
+    const on = document.body.classList.toggle('editing');
+    document.querySelectorAll('[data-edit]').forEach(el =>
+      el.setAttribute('contenteditable', on));
+    document.getElementById('editBtn').textContent =
+      on ? '✓ Редактирование включено' : '✎ Включить редактирование';
+    if (!on) localStorage.setItem('wedContent', saveSnapshot());
+  }
+  function saveSnapshot() {
+    return document.querySelector('body').innerHTML;
+  }
+  // Сохранение правок в браузере
+  document.querySelectorAll('[data-edit]').forEach(el => {
+    el.addEventListener('input', () => localStorage.setItem('wedContent', saveSnapshot()));
+  });
+  if (localStorage.getItem('wedContent')) {
+    document.body.innerHTML = localStorage.getItem('wedContent');
+    // переподключаем обработчики после восстановления
+    document.querySelectorAll('[data-edit]').forEach(el => {
+      el.addEventListener('input', () => localStorage.setItem('wedContent', saveSnapshot()));
+    });
+  }
+
+  // Скачивание готовой HTML-версии (текст правок уже «вшит» в файл)
+  function downloadHTML() {
+    const snapshot = '<!DOCTYPE html>\n<html lang="ru">\n<head>\n<meta charset="UTF-8">\n'
+      + document.head.innerHTML
+      + '\n</head>\n' + document.documentElement.outerHTML.match(/<body[\s\S]*<\/body>/)[0];
+    const blob = new Blob([snapshot], {type: 'text/html'});
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = 'invitation.html';
+    a.click();
+  }
+
+  // Отправка формы через FormToMail
+const form = document.getElementById('rsvpForm');
+const API_KEY = 'FfojmXtSm5rNKZpg'; // сюда вставьте ключ из FormToMail
+
+form.addEventListener('submit', async e => {
+  e.preventDefault();
+  const data = new FormData(form);
+  try {
+    const response = await fetch('https://api.formtomail.ru/send', {
+      method: 'POST',
+      headers: {
+        'Authorization': 'Bearer ' + API_KEY,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        title: 'Ответ гостя на свадьбу',
+        body: {
+          'Имя гостя': data.get('Имя гостя'),
+          'Присутствие': data.get('Присутствие'),
+          'Напитки': data.get('Напитки') || '—',
+          'Питание': data.get('Питание') || '—',
+          'Пожелание': data.get('Пожелание') || '—'
+        }
+      })
+    });
+    if (!response.ok) throw new Error();
+    form.style.display = 'none';
+    document.getElementById('thanks').style.display = 'block';
+  } catch {
+    alert('Не удалось отправить. Попробуйте ещё раз.');
+  }
+});
+
+</script>
+</body>
+</html>
